@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let rawdata = fs.readFileSync('dialog.json');
+let rawdata = fs.readFileSync('dialog_small.json');
 let lines = JSON.parse(rawdata);
 
 var trainingData = [];
