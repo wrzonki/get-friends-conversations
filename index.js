@@ -9,10 +9,10 @@ const net = new brain.recurrent.LSTM();
 const _Data = data;
 const config = {
   log: true,           // true to use console.log, when a function is supplied it is used
-  logPeriod: 5,
-  iterations: 1000,
-  errorThresh: 0.05,
-  learningRate: 0.5
+  logPeriod: 1,
+  iterations: 2,
+  errorThresh: 0.9,
+  learningRate: 1
 };
 net.train(_Data, config);
 console.log(net.run('hi'));
