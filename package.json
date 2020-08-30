@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "brain.js": "^2.0.0-beta.2",
     "csv2json": "^2.0.2",
     "puppeteer": "^5.2.1"
   },
