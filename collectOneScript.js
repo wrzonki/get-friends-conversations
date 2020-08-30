@@ -3,6 +3,8 @@ const episodes = require('./episodes');
 const fs = require('fs');
 let i = 0;
 
+fs.appendFile(`./dialog.csv`, '"person";"txt"\n', (err) => (err ? console.log(err) : null));
+
 const getDialog = async function (urls) {
   console.log(i);
   console.log(urls[i]);
@@ -10,20 +12,17 @@ const getDialog = async function (urls) {
   const page = await browser.newPage();
   await page.goto(urls[i]);
   const logs = await page.$$eval('p', (nodes) => {
-    return nodes.map((node) => {
-      let data = {};
-      let p = node.querySelector('b')
-      let t = node.childNodes[1]
+    let log = []
+    for (var k = 0; k < nodes.length; k++) {
+      let p = nodes[k].querySelector('b');
+      let t = nodes[k].childNodes[1];
       if (!!p && !!p.textContent.trim() && !!t && !!t.textContent.trim()) {
-        data.person = p.textContent.trim();
-        data.txt = t.textContent.trim();
-        return data;
+        log.push(`"${p.textContent.trim().replace(':', '')}";"${t.textContent.replace(/\n/g, '').trim()}"\n`);
       }
-    });
+    }
+    return log.join('');
   });
-  fs.writeFile(`./dialog.json`, JSON.stringify(logs.filter(el => el !== null)), (err) =>
-    err ? console.log(err) : null
-  );
+  fs.appendFileSync(`./dialog.csv`, logs, (err) => (err ? console.log(err) : null));
   i++;
   await browser.close();
   if (urls[i] !== undefined) {
@@ -31,5 +30,6 @@ const getDialog = async function (urls) {
   }
 };
 
-getDialog(episodes.episodes);
-
+setTimeout(() => {
+  getDialog(episodes.episodes);
+}, 1000)
